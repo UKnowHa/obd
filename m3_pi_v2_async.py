@@ -461,7 +461,7 @@ while True:
 	# Get the current FPS and draw it.
 	dt = clock.tick()
 	fps = clock.get_fps()
-	drawText("FPS: " + str(int(fps)), 0, 80, "fps")
+	drawText("FPS: " + str(int(fps)), 0, -80, "fps")
 
 	time_elapsed_since_last_action += dt
 	gui_test_time += dt
