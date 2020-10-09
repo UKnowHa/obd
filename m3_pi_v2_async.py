@@ -315,8 +315,8 @@ background_dir = 'tach/'
 background_files = ['%i.png' % i for i in range(0, 42)]
 ground = [pygame.image.load(os.path.join(background_dir, file)) for file in background_files]
 
-# Load the M3 PI image.
-img = pygame.image.load("images/m3_logo.png")
+# Load the Blazer PI image.
+img = pygame.image.load("images/blazer.png")
 img_button = img.get_rect(topleft=(135, 220))
 	
 # set up pygame
@@ -337,7 +337,7 @@ else:
 	windowSurface = pygame.display.set_mode(RESOLUTION, 0, 32)
 
 # Set the caption.
-pygame.display.set_caption('M3 PI')
+pygame.display.set_caption('Blazer PI')
 
 # Create a clock object so we can display FPS.
 clock = pygame.time.Clock()
