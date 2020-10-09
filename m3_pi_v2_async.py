@@ -86,11 +86,11 @@ class ecuThread(Thread):
 		
 	def new_coolant_temp(self, r):
 		global coolantTemp
-		coolantTemp = r.value.magnitude
+		coolantTemp = (r.value.magnitude * 9/5 + 32)
 		
 	def new_intake_temp(self, r):
 		global intakeTemp
-		intakeTemp = r.value.magnitude
+		intakeTemp = (r.value.magnitude * 9/5 + 32)
 		
 	def new_MAF(self, r):
 		global MAF
@@ -418,11 +418,11 @@ while True:
 		drawText("RPM", 0, 50, "label")
 		
 		# Draw the intake temp readout and label.
-		drawText(str(intakeTemp) + "\xb0C", 190, 105, "readout")
+		drawText(str(intakeTemp) + "\xb0F", 190, 105, "readout")
 		drawText("Intake", 190, 140, "label")
 		
 		# Draw the coolant temp readout and label.
-		drawText(str(coolantTemp) + "\xb0C", -160, 105, "readout")
+		drawText(str(coolantTemp) + "\xb0F", -160, 105, "readout")
 		drawText("Coolant", -170, 140, "label")
 		
 		# Draw the timing advance readout and label.
