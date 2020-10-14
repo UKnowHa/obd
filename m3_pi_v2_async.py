@@ -454,24 +454,24 @@ while True:
 		windowSurface.blit(ground[tach_iter], coords)
 		
 		# Draw the elm voltage readout and label.
-		drawText(str(elmVoltage) + " Volts", 0, -145, "readout")
-		drawText("Voltage", 0, -110, "label")
+		drawText(str(elmVoltage) + " Volts", -300, -145, "readout")
+		drawText("Voltage", -300, -110, "label")
 
 		# Draw the elm version readout and label.
-		drawText(str(elmVersion), 0, -145, "readout")
-		drawText("ELM", 0, -110, "label")
+		drawText(str(elmVersion), 300, -145, "readout")
+		drawText("ELM", 300, -110, "label")
         
 		# Draw the ambiant air temp readout and label.
-		drawText(str(ambiantAirTemp) + "\xb0F", -160, 105, "readout")
-		drawText("Outside", -170, 140, "label")
+		drawText(str(ambiantAirTemp) + "\xb0F", 300, 105, "readout")
+		drawText("Outside", 300, 140, "label")
 
 		# Draw the oil temp readout and label.
-		drawText(str(oilTemp) + "\xb0F", -160, 105, "readout")
-		drawText("Oil", -170, 140, "label")
+		drawText(str(oilTemp) + "\xb0F", -300, 105, "readout")
+		drawText("Oil", -300, 140, "label")
 
 		# Draw the fuel level readout and label.
-		drawText(str(fuelLevel) + " %", 0, -145, "readout")
-		drawText("Fuel", 0, -110, "label")
+		drawText(str(fuelLevel) + " %", -300, 0, "readout")
+		drawText("Fuel", -300, 50, "label")
 	
 		# Draw the RPM readout and label.
 		drawText(str(rpm), 0, 0, "readout")
