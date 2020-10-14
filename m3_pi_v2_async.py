@@ -61,7 +61,7 @@ class ecuThread(Thread):
 		if piTFT:
 			connection = obd.Async("/dev/ttyUSB0", 115200, "3", fast=False)
 		else:
-			connection = obd.Async("/dev/tty.usbserial-113010839615", 115200, "3", fast=False)
+			connection = obd.Async("/dev/rfcomm0")
 		
 		# Watch everything we care about.
 		connection.watch(obd.commands.ELM_VOLTAGE, callback=self.new_elm_voltage)
