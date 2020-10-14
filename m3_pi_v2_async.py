@@ -5,6 +5,11 @@ import numpy as np
 from threading import Thread
 
 # Globals.
+elmVoltage = 0
+elmVersion = 0
+ambiantAirTemp = 0
+oilTemp = 0
+fuelLevel = 0
 rpm = 0
 speed = 0
 coolantTemp = 0
@@ -59,6 +64,11 @@ class ecuThread(Thread):
 			connection = obd.Async("/dev/tty.usbserial-113010839615", 115200, "3", fast=False)
 		
 		# Watch everything we care about.
+		connection.watch(obd.commands.ELM_VOLTAGE, callback=self.new_elm_voltage)
+		connection.watch(obd.commands.ELM_VERSION, callback=self.new_elm_version)
+		connection.watch(obd.commands.AMBIANT_AIR_TEMP, callback=self.new_ambiant_air_temp)
+		connection.watch(obd.commands.OIL_TEMP, callback=self.new_oil_temp)
+		connection.watch(obd.commands.FUEL_LEVEL, callback=self.new_fuel_level)
 		connection.watch(obd.commands.RPM, callback=self.new_rpm)
 		connection.watch(obd.commands.SPEED, callback=self.new_speed)
 		connection.watch(obd.commands.COOLANT_TEMP, callback=self.new_coolant_temp)
@@ -74,6 +84,26 @@ class ecuThread(Thread):
 		
 		# Set the ready flag so we can boot the GUI.
 		ecuReady = True
+
+	def new_elm_voltage(self, r):
+		global elmVoltage
+		elmVoltage = int(r.value.magnitude)
+		
+	def new_elm_version(self, r):
+		global elmVersion
+		elmVersion = int(r.value.magnitude)
+		
+	def new_ambiant_air_temp(self, r):
+		global ambiantTemp
+		ambiantAirTemp = int(r.value.magnitude)
+		
+	def new_oil_temp(self, r):
+		global oilTemp
+		oilTemp = int(r.value.magnitude)
+		
+	def new_fuel_level(self, r):
+		global fuelLevel
+		fuelLevel = int(r.value.magnitude)
 		
 	def new_rpm(self, r):
 		global rpm
@@ -280,6 +310,11 @@ def readLog(logFile):
 
 def getLogValues(logFile):
 	global logIter
+	global elmVoltage
+	global elmVersion
+	global ambiantAirTemp
+	global oilTemp
+	global fuelLevel
 	global rpm
 	global speed
 	global coolantTemp
@@ -288,6 +323,11 @@ def getLogValues(logFile):
 	global throttlePosition
 	global engineLoad
 	
+	elmVoltage = logFile[logIter][8]
+	elmVersion = logFile[logIter][9]
+	ambiantAirTemp = logFile[logIter][10]
+	oilTemp = logFile[logIter][11]
+	fuelLevel = logFile[logIter][12]
 	rpm = int(logFile[logIter][1])
 	speed = int(logFile[logIter][2])
 	coolantTemp = logFile[logIter][3]
@@ -343,7 +383,7 @@ pygame.display.set_caption('Blazer PI')
 clock = pygame.time.Clock()
 
 # Create the csv log file with the specified header.		
-createLog(["TIME", "RPM", "SPEED", "COOLANT_TEMP", "INTAKE_TEMP", "MAF", "THROTTLE_POS", "ENGINE_LOAD"])
+createLog(["TIME", "RPM", "SPEED", "COOLANT_TEMP", "INTAKE_TEMP", "MAF", "THROTTLE_POS", "ENGINE_LOAD", "ELM_VOLTAGE", "ELM_VERSION", "AMBIANT_AIR_TEMP", "OIL_TEMP", "FUEL_LEVEL"])
 
 with open('logs/' + startTime + '.csv', 'rb') as csvfile:
 	reader = csv.DictReader(csvfile)
@@ -413,6 +453,26 @@ while True:
 		# Load the tach image
 		windowSurface.blit(ground[tach_iter], coords)
 		
+		# Draw the elm voltage readout and label.
+		drawText(str(elmVoltage) + " Volts", 0, -145, "readout")
+		drawText("Voltage", 0, -110, "label")
+
+		# Draw the elm version readout and label.
+		drawText(str(elmVersion), 0, -145, "readout")
+		drawText("ELM", 0, -110, "label")
+        
+		# Draw the ambiant air temp readout and label.
+		drawText(str(ambiantAirTemp) + "\xb0F", -160, 105, "readout")
+		drawText("Outside", -170, 140, "label")
+
+		# Draw the oil temp readout and label.
+		drawText(str(oilTemp) + "\xb0F", -160, 105, "readout")
+		drawText("Oil", -170, 140, "label")
+
+		# Draw the fuel level readout and label.
+		drawText(str(fuelLevel) + " %", 0, -145, "readout")
+		drawText("Fuel", 0, -110, "label")
+	
 		# Draw the RPM readout and label.
 		drawText(str(rpm), 0, 0, "readout")
 		drawText("RPM", 0, 50, "label")
@@ -468,7 +528,7 @@ while True:
 	# We only want to log once a second.
 	if time_elapsed_since_last_action > 1000:
 		# Log all of our data. 
-		data = [datetime.datetime.today().strftime('%Y%m%d%H%M%S'), rpm, speed, coolantTemp, intakeTemp, MAF, throttlePosition, engineLoad]  
+		data = [datetime.datetime.today().strftime('%Y%m%d%H%M%S'), rpm, speed, coolantTemp, intakeTemp, MAF, throttlePosition, engineLoad, elmVoltage, elmVersion, ambiantAirTemp, oilTemp, fuelLevel]  
 		updateLog(data)
 		
 		time_elapsed_since_last_action = 0
