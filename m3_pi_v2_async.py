@@ -28,7 +28,7 @@ fps = 0
 dtc_iter = 0
 priority_count = 0
 ecuReady = False
-startTime = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
+startTime = datetime.datetime.today().strftime('%m-%d-%y_%H-%M-%S')
 time_elapsed_since_last_action = 0
 gui_test_time = 0
 debugFlag = False
@@ -292,7 +292,7 @@ def updateLog(data):
 		w.writerow(data)
 		
 def closeLog():
-	endTime = datetime.datetime.today().strftime('%Y%m%d%H%M%S')
+	endTime = datetime.datetime.today().strftime('%m-%d-%y_%H-%M-%S')
 	os.rename('logs/' + startTime + '.csv', 'logs/' + startTime + "_" + endTime + '.csv')
 
 def getIP():
@@ -528,7 +528,7 @@ while True:
 	# We only want to log once a second.
 	if time_elapsed_since_last_action > 1000:
 		# Log all of our data. 
-		data = [datetime.datetime.today().strftime('%Y%m%d%H%M%S'), rpm, speed, coolantTemp, intakeTemp, MAF, throttlePosition, engineLoad, elmVoltage, elmVersion, ambiantAirTemp, oilTemp, fuelLevel]  
+		data = [datetime.datetime.today().strftime('%H:%M:%S %m/%d/%y'), rpm, speed, coolantTemp, intakeTemp, MAF, throttlePosition, engineLoad, elmVoltage, elmVersion, ambiantAirTemp, oilTemp, fuelLevel]  
 		updateLog(data)
 		
 		time_elapsed_since_last_action = 0
