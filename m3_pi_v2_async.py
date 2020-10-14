@@ -526,7 +526,7 @@ while True:
 	time_elapsed_since_last_action += dt
 	gui_test_time += dt
 	# We only want to log once a second.
-	if time_elapsed_since_last_action > 1000:
+	if time_elapsed_since_last_action > 500:
 		# Log all of our data. 
 		data = [datetime.datetime.today().strftime('%H:%M:%S %m/%d/%y'), rpm, speed, coolantTemp, intakeTemp, MAF, throttlePosition, engineLoad, elmVoltage, elmVersion, ambiantAirTemp, oilTemp, fuelLevel]  
 		updateLog(data)
